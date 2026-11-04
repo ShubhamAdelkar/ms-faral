@@ -14,12 +14,13 @@ import "./App.css";
 const products = [
   {
     id: "karanji",
-    name: { mr: "करंजी", en: "Karanji" },
+    name: { mr: "पिठाची करंजी", en: "Pithachi Karanji" },
     description: {
-      mr: "खोबऱ्याच्या सारणाने भरलेली, पिठाची खुसखुशीत आणि सोनेरी करंजी.",
-      en: "Crisp, golden crescents with a rich coconut filling.",
+      mr: "चण्याचे पीठ, रवा आणि सुके खोबरे भरलेली खुसखुशीत करंजी.",
+      en: "Crisp crescents filled with roasted gram flour, semolina, and dry coconut.",
     },
-    price: 224,
+    price: 100,
+    unit: { mr: "२५० ग्रॅम", en: "250 g" },
     category: "sweet",
     image: "/assets/Karanji.jpg",
     emoji: "🥟",
@@ -33,7 +34,8 @@ const products = [
       mr: "थोडी गोड, खुसखुशीत आणि आठवणींनी भरलेली.",
       en: "A little sweet, a little crunchy, always nostalgic.",
     },
-    price: 144,
+    price: 68,
+    unit: { mr: "२५० ग्रॅम", en: "250 g" },
     category: "sweet",
     image: "/assets/Shankarpali.jpg",
     emoji: "🍪",
@@ -41,12 +43,13 @@ const products = [
   },
   {
     id: "chakli",
-    name: { mr: "चकली", en: "Chakli" },
+    name: { mr: "भाजणी चकली", en: "Bhajani Chakli" },
     description: {
       mr: "हाताने पिळलेली, खमंग आणि कुरकुरीत चकली.",
       en: "Hand-twisted spirals with a delicious savoury crunch.",
     },
-    price: 176,
+    price: 90,
+    unit: { mr: "२५० ग्रॅम", en: "250 g" },
     category: "savoury",
     image: "/assets/chakali.jpg",
     emoji: "🌀",
@@ -55,12 +58,13 @@ const products = [
   },
   {
     id: "ladoo",
-    name: { mr: "रवा-बेसन लाडू", en: "Rava Besan Ladoo" },
+    name: { mr: "बेसन / रवा लाडू", en: "Besan / Rava Ladoo" },
     description: {
       mr: "रवा आणि बेसनाचे, शुद्ध तुपातले खमंग लाडू.",
       en: "Rich, comforting semolina and besan ladoos made with pure ghee.",
     },
-    price: 256,
+    price: 100,
+    unit: { mr: "२५० ग्रॅम", en: "250 g" },
     category: "sweet",
     image: "/assets/Rava-Besan-Ladoo.jpg",
     emoji: "🟠",
@@ -70,10 +74,11 @@ const products = [
     id: "anarse",
     name: { mr: "अनारसे", en: "Anarse" },
     description: {
-      mr: "तीळ लावलेले, सणाची आठवण करून देणारे पारंपरिक अनारसे.",
+      mr: "तीळ लावलेले, पारंपरिक अनारसे.",
       en: "A festive Maharashtrian classic with a sesame finish.",
     },
-    price: 240,
+    price: 110,
+    unit: { mr: "२५० ग्रॅम", en: "250 g" },
     category: "sweet",
     image: "/assets/Aanarase.jpg",
     emoji: "🌕",
@@ -81,12 +86,13 @@ const products = [
   },
   {
     id: "chivda",
-    name: { mr: "पोहे चिवडा", en: "Poha Chivda" },
+    name: { mr: "पातळ पोहा चिवडा", en: "Patal Poha Chivda" },
     description: {
       mr: "शेंगदाणे आणि मसाल्यांसह हलका, खमंग चिवडा.",
       en: "Light, savoury flakes tossed with nuts and spices.",
     },
-    price: 160,
+    price: 63,
+    unit: { mr: "२५० ग्रॅम", en: "250 g" },
     category: "savoury",
     image: "/assets/poha-chivada.jpg",
     emoji: "🥜",
@@ -175,7 +181,6 @@ const copy = {
     category: { sweet: "गोड", savoury: "तिखट" },
     add: "जोडा",
     addToBag: "पिशवीत जोडा",
-    weight: "२५० ग्रॅम",
     reviewsEyebrow: "दिवाळीच्या तयारीतले गोड अनुभव",
     reviewsTitle: "सणासाठी तयार",
     reviewsEmphasis: "घरगुती फराळ.",
@@ -234,7 +239,6 @@ const copy = {
     category: { sweet: "Sweet", savoury: "Savoury" },
     add: "Add",
     addToBag: "Add to bag",
-    weight: "250g",
     reviewsEyebrow: "Kind words, shared with love",
     reviewsTitle: "A little love",
     reviewsEmphasis: "for our faral.",
@@ -316,7 +320,7 @@ function ProductCard({ product, quantity, onAdd, language, text }) {
         </div>
         <p className="product-price">
           ₹{product.price}
-          <span> / {text.weight}</span>
+          <span> / {product.unit[language]}</span>
         </p>
       </div>
     </article>
@@ -387,7 +391,7 @@ function CartSheet({ cart, onClose, onChangeQuantity, language, text }) {
   );
   const orderLines = cartItems.map(
     (product) =>
-      `• ${product.name[language]} × ${cart[product.id]} (${text.weight}) — ₹${product.price * cart[product.id]}`,
+      `• ${product.name[language]} × ${cart[product.id]} (${product.unit[language]}) — ₹${product.price * cart[product.id]}`,
   );
   const whatsappMessage = [
     language === "mr"
@@ -445,7 +449,7 @@ function CartSheet({ cart, onClose, onChangeQuantity, language, text }) {
                   <div className="cart-item-details">
                     <h3>{product.name[language]}</h3>
                     <p>
-                      ₹{product.price} · {text.weight}
+                      ₹{product.price} · {product.unit[language]}
                     </p>
                     <div className="quantity-control">
                       <button
